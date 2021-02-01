@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Unicode Emoji Picker</title>
+  <base href="/">
+  <meta name="description" content="Customizable emoji picker web component, based on the Unicode Emoji specification 🙂">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+  <style>
+    * {
+      outline: none;
+      box-sizing: border-box;
+    }
+    :root {
+      --body-fill-color: #fff;
+      --body-text-color: #111;
+      --picked-emoji-input-border-color: #e4e4e4;
+      --picked-emoji-input-border-color-hover: #222;
+      --picked-emoji-tooltip-fill-color: #fff;
+      --picked-emoji-tooltip-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.2), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+      --button-fill-color: #fff;
+      --button-text-color: #1f1f1f;
+      --button-border-color: #bbb;
+      --button-shadow-focus: 0 0 0 4px #ddd;
+      --dropdown-fill-color: #fff;
+      --dropdown-text-color: #1f1f1f;
+      --dropdown-border-color: #ccc;
+      --dropdown-shadow-focus: 0 0 0 4px #ddd;
+    }
+    :root[data-theme="dark"] {
+      --body-fill-color: #20201d;
+      --body-text-color: #fffffc;
+      --picked-emoji-input-border-color: #50504a;
+      --picked-emoji-input-border-color-hover: #eee;
+      --picked-emoji-tooltip-fill-color: #393938;
+      --picked-emoji-tooltip-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.35);
+      --button-fill-color: #393938;
+      --button-text-color: #fffffc;
+      --button-border-color: #555;
+      --button-shadow-focus: 0 0 0 4px #444;
+      --dropdown-fill-color: #393938;
+      --dropdown-text-color: #fffffc;
+      --dropdown-border-color: #555;
+      --dropdown-shadow-focus: 0 0 0 4px #444;
+    }
+
+    unicode-emoji-picker {
+      max-width: 100%;
+    }
+    :root[data-theme="dark"] unicode-emoji-picker {
+      --fill-color: #393938;
+      --text-color: #fffffc;
+      --box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.35);
+      --filters-border-color: #30302a;
+      --filter-fill-color-hover: #454540;
+      --content-scrollbar-thumb-fill-color: #50504a;
+      --content-scrollbar-thumb-fill-color-hover: #76766f;
+      --filter-active-marker-border-color: #595955;
+      --title-bar-fill-color: rgba(57, 57, 55, 0.96);
+      --search-input-border-color: #50504a;
+      --search-input-border-color-hover: #eee;
+      --emoji-border-color-hover: #595955;
+      --variations-backdrop-fill-color: rgba(57, 57, 55, 0.8);
+      --emoji-variation-marker-border-color: #50504a;
+      --emoji-variation-marker-border-color-hover: #76766f;
+    }
+
+    html {
+      height: 100%;
+      font-size: 17px;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      margin: 0;
+      background-color: var(--body-fill-color);
+      color: var(--body-text-color);
+      font-family: 'Roboto', Arial, sans-serif;
+      line-height: 1.15;
+    }
+    input {
+      color: inherit;
+      font: inherit;
+      margin: 0;
+    }
+    button {
+      cursor: pointer;
+      padding: 0;
+      margin: 0;
+      color: inherit;
+      font: inherit;
+      border: 0 none;
+      -webkit-appearance: button;
+    }
+    button::-moz-focus-inner {
+      border: 0 none;
+    }
+    select {
+      cursor: pointer;
+      color: inherit;
+      font: inherit;
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 0 3rem;
+    }
+
+    .picked-emoji {
+      position: relative;
+      padding: 1rem 0 3.8rem;
+    }
+
+    .picked-emoji .input {
+      display: block;
+      max-width: 8rem;
+      padding: 0.75rem 0.95rem;
+      text-align: center;
+      font-size: 2.5rem;
+      font-family: apple color emoji, segoe ui emoji, noto color emoji, android emoji, emojisymbols, emojione mozilla, twemoji mozilla, segoe ui symbol;
+      border: 0 none;
+      border-bottom: 4px solid var(--picked-emoji-input-border-color);
+      background-color: transparent;
+      border-radius: 0;
+      box-shadow: none;
+      transition: border-color 150ms cubic-bezier(0, 0, .2, .1);
+    }
+    .picked-emoji .input:hover,
+    .picked-emoji .input:focus {
+      border-color: var(--picked-emoji-input-border-color-hover);
+    }
+
+    .picked-emoji .tooltip {
+      pointer-events: none;
+      position: absolute;
+      z-index: 100;
+      top: 6.35rem;
+      left: 50%;
+      padding: 1rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      text-align: center;
+      background-color: var(--picked-emoji-tooltip-fill-color);
+      box-shadow: var(--picked-emoji-tooltip-shadow);
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 200ms ease-in;
+    }
+    .picked-emoji .tooltip.displayed {
+      opacity: 1;
+      transition: none;
+    }
+
+    .emoji-picker-settings {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      padding: 3.8rem 0 2rem;
+      justify-content: center;
+    }
+
+    .emoji-picker-settings > * {
+      flex: 0 0 280px;
+    }
+
+    .button {
+      height: 50px;
+      padding: 0 2rem;
+      margin: 0.3rem;
+      background-color: var(--button-fill-color);
+      color: var(--button-text-color);
+      border-radius: 4px;
+      border: 2px solid var(--button-border-color);
+      transition: box-shadow 150ms ease-in-out, background-color 150ms ease-in-out;
+    }
+    .button:hover,
+    .button:focus {
+      box-shadow: var(--button-shadow-focus);
+    }
+
+    .dropdown {
+      display: inline-block;
+      position: relative;
+      margin: 0.3rem;
+    }
+    .dropdown .input,
+    .dropdown .input {
+      display: block;
+      width: 100%;
+      height: 50px;
+      padding: 0 calc(2rem + 14px) 0 2rem;
+      background-color: var(--dropdown-fill-color);
+      color: var(--dropdown-text-color);
+      text-align: center;
+      border: 2px solid var(--dropdown-border-color);
+      border-radius: 4px;
+      transition: box-shadow 150ms ease-in-out, background-color 150ms ease-in-out;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+    .dropdown .input:hover,
+    .dropdown .input:focus {
+      box-shadow: var(--dropdown-shadow-focus);
+    }
+    .dropdown .caret {
+      position: absolute;
+      right: 14px;
+      top: 0;
+      width: 40px;
+      height: 100%;
+      padding: 5px;
+      pointer-events: none
+    }
+    .dropdown .caret path {
+      stroke-width: 2px;
+      stroke: var(--dropdown-text-color);
+    }
+
+    @media (max-width: 530px) {
+      html {
+        font-size: 16px;
+      }
+      unicode-emoji-picker {
+        font-size: 22px;
+      }
+      .container {
+        padding: 0 2rem;
+      }
+    }
+
+    @media (max-height: 850px) {
+      html {
+        font-size: 16px;
+      }
+      unicode-emoji-picker {
+        font-size: 22px;
+      }
+      .container {
+        padding: 0 2rem;
+      }
+      .picked-emoji {
+        padding: 0.5rem 0 2rem;
+      }
+      .picked-emoji .tooltip {
+        top: 5.85rem;
+      }
+      .emoji-picker-settings {
+        padding: 2rem 0 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="picked-emoji">
+      <input class="input" value="😀" autocomplete="off" readonly>
+      <div class="tooltip">Copied to clipboard !</div>
+    </div>
+
+    <unicode-emoji-picker></unicode-emoji-picker>
+
+    <div class="emoji-picker-settings">
+      <button class="button invert-theme-button">Turn off the light 🌙</button>
+      <div class="dropdown filters-position-dropdown">
+        <select class="input" autocomplete="off">
+          <option value="top" selected>Filters at the ⬆️ top</option>
+          <option value="left">Filters at the ⬅️ left</option>
+          <option value="bottom">Filters at the ⬇️ bottom</option>
+          <option value="right">Filters at the ➡️ right</option>
+        </select>
+        <svg class="caret" viewBox="0 0 32 32">
+          <path d="M13 23l6-7-6-7" fill="none" stroke="#000" stroke-linecap="round" transform="rotate(90 16 16)"/>
+        </svg>
+      </div>
+      <div class="dropdown version-dropdown">
+        <select class="input" autocomplete="off">
+          <option value="0.6">Unicode Emoji v0.6</option>
+          <option value="0.7">Unicode Emoji v0.7</option>
+          <option value="1.0">Unicode Emoji v1.0</option>
+          <option value="2.0">Unicode Emoji v2.0</option>
+          <option value="3.0">Unicode Emoji v3.0</option>
+          <option value="4.0">Unicode Emoji v4.0</option>
+          <option value="5.0">Unicode Emoji v5.0</option>
+          <option value="11.0">Unicode Emoji v11.0</option>
+          <option value="12.0" selected>Unicode Emoji v12.0 ✔️</option>
+          <option value="12.1">Unicode Emoji v12.1</option>
+          <option value="13.0">Unicode Emoji v13.0</option>
+          <option value="13.1">Unicode Emoji v13.1</option>
+        </select>
+        <svg class="caret" viewBox="0 0 32 32">
+          <path d="M13 23l6-7-6-7" fill="none" stroke="#000" stroke-linecap="round" transform="rotate(90 16 16)"/>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+  <script defer src="https://unpkg.com/es-module-shims@latest/dist/es-module-shims.js"></script>
+  <script type="importmap-shim">
+    {
+      "imports": {
+        "scrollable-component": "/node_modules/scrollable-component/index.js",
+        "unicode-emoji": "/node_modules/unicode-emoji/index.js",
+        "unicode-emoji-picker": "/node_modules/unicode-emoji-picker/index.js"
+      }
+    }
+  </script>
+  <script type="module-shim" src="/node_modules/unicode-emoji-picker/index.js"></script>
+  <script>
+    const pickedEmojiInput = document.querySelector('.picked-emoji .input');
+    const pickedEmojiTooltip = document.querySelector('.picked-emoji .tooltip');
+    const emojiPicker = document.querySelector('unicode-emoji-picker');
+    const invertThemeButton = document.querySelector('.invert-theme-button');
+    const filtersPositionInput = document.querySelector('.filters-position-dropdown .input');
+    const versionInput = document.querySelector('.version-dropdown .input');
+    let tooltipTimeout = null;
+
+    function toggleDarkTheme() {
+      if (document.documentElement.getAttribute('data-theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        invertThemeButton.textContent = 'Turn off the light 🌙';
+      }
+      else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        invertThemeButton.textContent = 'Turn on the light ☀️';
+      }
+    }
+
+    function copyToClipboard() {
+      if (tooltipTimeout) {
+        clearTimeout(tooltipTimeout);
+      }
+      navigator.clipboard.writeText(pickedEmojiInput.value).then(() => {
+        pickedEmojiTooltip.classList.add('displayed');
+        tooltipTimeout = setTimeout(() => {
+          tooltipTimeout = null;
+          pickedEmojiTooltip.classList.remove('displayed');
+        }, 1200);
+      });
+    }
+
+    pickedEmojiInput.addEventListener('click', () => {
+      copyToClipboard();
+    });
+
+    pickedEmojiInput.addEventListener('focus', () => {
+      copyToClipboard();
+    });
+
+    emojiPicker.addEventListener('emoji-pick', (event) => {
+      pickedEmojiInput.value = event.detail.emoji;
+    });
+
+    invertThemeButton.addEventListener('click', () => {
+      toggleDarkTheme();
+    });
+
+    filtersPositionInput.addEventListener('change', () => {
+      emojiPicker.setAttribute('filters-position', filtersPositionInput.value);
+    });
+
+    versionInput.addEventListener('change', () => {
+      versionInput.querySelectorAll('option').forEach((option) => {
+        option.textContent = option.textContent.replace(' ✔️', '');
+        if (option.selected) {
+          option.textContent += ' ✔️';
+        }
+      });
+      emojiPicker.setAttribute('version', versionInput.value);
+    });
+
+    const darkThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    darkThemeMediaQuery.addEventListener('change', () => {
+      toggleDarkTheme();
+    }, { passive: true });
+    if (darkThemeMediaQuery.matches) {
+      toggleDarkTheme();
+    }
+
+    // window.customElements.whenDefined('unicode-emoji-picker').then(() => {
+    //   emojiPicker.setTranslation({
+    //     'search': {
+    //       emoji: '🔎',
+    //       title: 'Rechercher un Emoji',
+    //       inputPlaceholder: 'Rechercher un Emoji...',
+    //     },
+    //     'face-emotion': {
+    //       emoji: '🙂',
+    //       title: 'Émoticônes & Émotions',
+    //     },
+    //     'food-drink': {
+    //       emoji: '🍉',
+    //       title: 'Alimentation & Boissons',
+    //     },
+    //     'animals-nature': {
+    //       emoji: '🦋',
+    //       title: 'Nature & Animaux',
+    //     },
+    //     'activities-events': {
+    //       emoji: '⚽',
+    //       title: 'Activités & Événements',
+    //     },
+    //     'person-people': {
+    //       emoji: '👨‍🚀',
+    //       title: 'Personnes',
+    //     },
+    //     'travel-places': {
+    //       emoji: '🏝️',
+    //       title: 'Voyages & Lieux',
+    //     },
+    //     'objects': {
+    //       emoji: '💡',
+    //       title: 'Objets',
+    //     },
+    //     'symbols': {
+    //       emoji: '🗯️',
+    //       title: 'Symboles',
+    //     },
+    //     'flags': {
+    //       emoji: '🏴‍☠️',
+    //       title: 'Drapeaux',
+    //     },
+    //   });
+    //   emojiPicker.selectGroup('search');
+    //   emojiPicker.searchEmoji('love face');
+    // });
+  </script>
+</body>
+</html>
