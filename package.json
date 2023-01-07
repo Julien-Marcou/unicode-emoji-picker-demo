@@ -1,6 +1,6 @@
 {
   "name": "unicode-emoji-picker-demo",
   "dependencies": {
-    "unicode-emoji-picker": "^1.2.0"
+    "unicode-emoji-picker": "^2.0.0-next.1"
   }
 }
