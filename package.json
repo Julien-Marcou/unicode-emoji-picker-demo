@@ -1,5 +1,8 @@
 {
   "name": "unicode-emoji-picker-demo",
+  "scripts": {
+    "flags": "node download-noto-flags.mjs"
+  },
   "dependencies": {
     "unicode-emoji-picker": "^2.0.0-next.1"
   }
