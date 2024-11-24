@@ -7,7 +7,9 @@
   <meta name="description" content="Customizable emoji picker web component, based on the Unicode Emoji specification 🙂">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="/favicon.png">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
   <style>
     @supports (-webkit-hyphens: none) {
@@ -349,8 +351,9 @@
       <div class="dropdown font-dropdown">
         <select class="input" autocomplete="off">
           <option value="" selected>System's Default ✔️</option>
-          <option value="NotoColorEmoji">Noto Color Emoji</option>
-          <option value="NotoColorFlags">Noto Color Flags</option>
+          <option value="Noto Color Emoji">Noto Color Emoji (from Google Fonts)</option>
+          <option value="NotoColorEmoji">Noto Color Emoji (self hosted)</option>
+          <option value="NotoColorFlags">Noto Color Flags (self hosted)</option>
         </select>
         <svg class="caret" viewBox="0 0 32 32">
           <path d="M13 23l6-7-6-7" fill="none" stroke="#000" stroke-linecap="round" transform="rotate(90 16 16)"/>
