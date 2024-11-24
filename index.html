@@ -66,6 +66,8 @@
       --dropdown-text-color: #1f1f1f;
       --dropdown-border-color: #ccc;
       --dropdown-shadow-focus: 0 0 0 4px #ddd;
+
+      --emoji-font-without-noto: apple color emoji, segoe ui emoji, android emoji, emojisymbols, emojione mozilla, twemoji mozilla, segoe ui symbol, sans-serif;
     }
     :root[data-theme="dark"] {
       --body-fill-color: #20201d;
@@ -86,6 +88,7 @@
 
     unicode-emoji-picker {
       max-width: 100%;
+      --emoji-font-family: var(--emoji-font-without-noto);
     }
     :root[data-theme="dark"] unicode-emoji-picker {
       --fill-color: #393938;
@@ -132,7 +135,9 @@
       color: inherit;
       font: inherit;
       border: 0 none;
+      appearance: button;
       -webkit-appearance: button;
+      -moz-appearance: button;
     }
     button::-moz-focus-inner {
       border: 0 none;
@@ -166,7 +171,7 @@
       padding: 0.75rem 0.95rem;
       text-align: center;
       font-size: 2.5rem;
-      font-family: apple color emoji, segoe ui emoji, noto color emoji, android emoji, emojisymbols, emojione mozilla, twemoji mozilla, segoe ui symbol;
+      font-family: var(--emoji-font-without-noto);
       border: 0 none;
       border-bottom: 4px solid var(--picked-emoji-input-border-color);
       background-color: transparent;
@@ -243,6 +248,7 @@
       border: 2px solid var(--dropdown-border-color);
       border-radius: 4px;
       transition: box-shadow 150ms ease-in-out, background-color 150ms ease-in-out;
+      appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;
     }
@@ -445,7 +451,7 @@
           option.textContent += ' ✔️';
         }
       });
-      const fallBackFonts = 'apple color emoji, segoe ui emoji, noto color emoji, android emoji, emojisymbols, emojione mozilla, twemoji mozilla, segoe ui symbol, sans-serif';
+      const fallBackFonts = 'apple color emoji, segoe ui emoji, android emoji, emojisymbols, emojione mozilla, twemoji mozilla, segoe ui symbol, sans-serif';
       emojiPicker.setAttribute('style', fontInput.value ? `--emoji-font-family: "${fontInput.value}", ${fallBackFonts};` : '');
     });
 
