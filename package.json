@@ -1,9 +1,15 @@
 {
   "name": "unicode-emoji-picker-demo",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
+    "serve": "http-server --port 4200 -c-1",
     "flags": "node download-noto-flags.mjs"
   },
   "dependencies": {
     "unicode-emoji-picker": "^2.0.0-next.2"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
   }
 }
