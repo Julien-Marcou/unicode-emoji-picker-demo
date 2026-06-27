@@ -1,4 +1,6 @@
-import 'unicode-emoji-picker';
+import { defineUnicodeEmojiPicker } from 'unicode-emoji-picker';
+
+defineUnicodeEmojiPicker();
 
 const pickedEmojiInput = document.querySelector('.picked-emoji .input');
 const pickedEmojiTooltip = document.querySelector('.picked-emoji .tooltip');
