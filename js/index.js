@@ -6,7 +6,7 @@ const pickedEmojiInput = document.querySelector('.picked-emoji .input');
 const pickedEmojiTooltip = document.querySelector('.picked-emoji .tooltip');
 const emojiPicker = document.querySelector('unicode-emoji-picker');
 const invertThemeButton = document.querySelector('.invert-theme-button');
-const filtersPositionInput = document.querySelector('.filters-position-dropdown .input');
+const tabsPositionInput = document.querySelector('.tabs-position-dropdown .input');
 const versionInput = document.querySelector('.version-dropdown .input');
 const fontInput = document.querySelector('.font-dropdown .input');
 let tooltipTimeout = null;
@@ -51,8 +51,8 @@ invertThemeButton.addEventListener('click', () => {
   toggleDarkTheme();
 });
 
-filtersPositionInput.addEventListener('change', () => {
-  emojiPicker.setAttribute('filters-position', filtersPositionInput.value);
+tabsPositionInput.addEventListener('change', () => {
+  emojiPicker.setAttribute('tabs-position', tabsPositionInput.value);
 });
 
 versionInput.addEventListener('change', () => {
@@ -128,6 +128,7 @@ if (darkThemeMediaQuery.matches) {
 //       title: 'Drapeaux',
 //     },
 //   });
-//   emojiPicker.selectGroup('search');
+//   emojiPicker.selectTab('search');
 //   emojiPicker.searchEmoji('love face');
+//   emojiPicker.focusContent(true);
 // });

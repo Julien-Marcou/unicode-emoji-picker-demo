@@ -1,4 +1,3 @@
-
 @supports (-webkit-hyphens: none) {
   @font-face {
     font-family: 'NotoColorEmoji';
@@ -38,6 +37,7 @@
   outline: none;
   box-sizing: border-box;
 }
+
 :root {
   --body-fill-color: #fff;
   --body-text-color: #111;
@@ -80,21 +80,20 @@ unicode-emoji-picker {
 :root[data-theme="dark"] unicode-emoji-picker {
   --fill-color: #393938;
   --text-color: #fffffc;
-  --box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.35);
-  --filters-border-color: #30302a;
-  --filter-fill-color-hover: #454540;
+  --tabs-border-color: #30302a;
+  --tab-fill-color-hover: #454540;
   --content-scrollbar-thumb-fill-color: #50504a;
   --content-scrollbar-thumb-fill-color-hover: #76766f;
-  --filter-active-marker-border-color: #595955;
-  --title-bar-fill-color: rgba(57, 57, 55, 0.96);
+  --tab-active-marker-border-color: #595955;
+  --title-bar-fill-color: color-mix(in srgb, var(--fill-color), transparent 12%);
   --search-input-border-color: #50504a;
   --search-input-border-color-hover: #eee;
   --emoji-border-color-hover: #595955;
-  --variations-backdrop-fill-color: rgba(57, 57, 55, 0.8);
+  --variations-backdrop-fill-color: color-mix(in srgb, var(--fill-color), transparent 20%);
   --emoji-variation-marker-border-color: #50504a;
   --emoji-variation-marker-border-color-hover: #76766f;
+  box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.35);
 }
-
 html {
   height: 100%;
   font-size: 17px;
