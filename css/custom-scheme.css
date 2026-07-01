@@ -24,8 +24,8 @@
   --search-input-border-color: #6b5b95;
   --search-input-border-color-hover: #ffb454;
   --variations-backdrop-fill-color: color-mix(in srgb, var(--fill-color), transparent 35%);
-  --emoji-variation-marker-border-color: #6b5b95;
-  --emoji-variation-marker-border-color-hover: #ffb454;
+  --emoji-variation-marker-color: #6b5b95;
+  --emoji-variation-marker-color-hover: #ffb454;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
   border-radius: 3px;
   outline: 1px solid #6b5b95;

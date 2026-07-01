@@ -25,14 +25,14 @@
     --tab-fill-color-hover: #454540;
     --content-scrollbar-thumb-fill-color: #50504a;
     --content-scrollbar-thumb-fill-color-hover: #76766f;
-    --tab-active-marker-border-color: #595955;
+    --tab-active-marker-color: #595955;
     --title-bar-fill-color: color-mix(in srgb, var(--fill-color), transparent 12%);
     --search-input-border-color: #50504a;
     --search-input-border-color-hover: #eee;
     --emoji-border-color-hover: #595955;
     --variations-backdrop-fill-color: color-mix(in srgb, var(--fill-color), transparent 20%);
-    --emoji-variation-marker-border-color: #50504a;
-    --emoji-variation-marker-border-color-hover: #76766f;
+    --emoji-variation-marker-color: #50504a;
+    --emoji-variation-marker-color-hover: #76766f;
     box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.35);
   }
 }
