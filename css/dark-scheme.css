@@ -1,0 +1,38 @@
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]),
+  :root[data-theme="dark"] {
+    --body-fill-color: #20201d;
+    --body-text-color: #fffffc;
+    --picked-emoji-input-border-color: #50504a;
+    --picked-emoji-input-border-color-hover: #eee;
+    --picked-emoji-tooltip-fill-color: #393938;
+    --picked-emoji-tooltip-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.35);
+    --button-fill-color: #393938;
+    --button-text-color: #fffffc;
+    --button-border-color: #555;
+    --button-shadow-focus: 0 0 0 4px #444;
+    --dropdown-fill-color: #393938;
+    --dropdown-text-color: #fffffc;
+    --dropdown-border-color: #555;
+    --dropdown-shadow-focus: 0 0 0 4px #444;
+  }
+
+  :root:not([data-theme]) unicode-emoji-picker,
+  :root[data-theme="dark"] unicode-emoji-picker {
+    --fill-color: #393938;
+    --text-color: #fffffc;
+    --tabs-border-color: #30302a;
+    --tab-fill-color-hover: #454540;
+    --content-scrollbar-thumb-fill-color: #50504a;
+    --content-scrollbar-thumb-fill-color-hover: #76766f;
+    --tab-active-marker-border-color: #595955;
+    --title-bar-fill-color: color-mix(in srgb, var(--fill-color), transparent 12%);
+    --search-input-border-color: #50504a;
+    --search-input-border-color-hover: #eee;
+    --emoji-border-color-hover: #595955;
+    --variations-backdrop-fill-color: color-mix(in srgb, var(--fill-color), transparent 20%);
+    --emoji-variation-marker-border-color: #50504a;
+    --emoji-variation-marker-border-color-hover: #76766f;
+    box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.35);
+  }
+}
