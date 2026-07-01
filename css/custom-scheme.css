@@ -1,0 +1,86 @@
+:root[data-theme="custom"] {
+  --body-fill-color: #1b1628;
+  --body-text-color: #f7f4ff;
+  --picked-emoji-input-border-color: #665a87;
+  --picked-emoji-input-border-color-hover: #ffb454;
+  --picked-emoji-tooltip-fill-color: #2b2440;
+  --picked-emoji-tooltip-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
+  --button-fill-color: #372c55;
+  --button-text-color: #fff8f0;
+  --button-border-color: #7d6ca8;
+  --button-shadow-focus: 0 0 0 4px rgba(255, 180, 84, 0.35);
+  --dropdown-fill-color: #372c55;
+  --dropdown-text-color: #fff8f0;
+  --dropdown-border-color: #7d6ca8;
+  --dropdown-shadow-focus: 0 0 0 4px rgba(255, 180, 84, 0.35);
+}
+
+:root[data-theme="custom"] unicode-emoji-picker {
+  --fill-color: #2b2440;
+  --text-color: #f7f4ff;
+  --tabs-border-color: #3b3058;
+  --tab-fill-color-hover: #46356b;
+  --title-bar-fill-color: color-mix(in srgb, var(--fill-color), transparent 25%);
+  --search-input-border-color: #6b5b95;
+  --search-input-border-color-hover: #ffb454;
+  --variations-backdrop-fill-color: color-mix(in srgb, var(--fill-color), transparent 35%);
+  --emoji-variation-marker-border-color: #6b5b95;
+  --emoji-variation-marker-border-color-hover: #ffb454;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
+  border-radius: 3px;
+  outline: 1px solid #6b5b95;
+  transition: outline var(--transition);
+  font-family: 'Times New Roman', Times, serif;
+}
+:root[data-theme="custom"] unicode-emoji-picker:focus-within {
+  outline: 1px solid #ffb454;
+}
+:root[data-theme="custom"] unicode-emoji-picker::part(tab-wrapper active):after {
+  display: none;
+}
+:root[data-theme="custom"] unicode-emoji-picker::part(tab active) {
+  background-color: #ff9f4322;
+}
+:root[data-theme="custom"] unicode-emoji-picker::part(tab active):hover,
+:root[data-theme="custom"] unicode-emoji-picker::part(tab active):focus-visible {
+  background-color: #ff9f4366;
+}
+:root[data-theme="custom"] unicode-emoji-picker::part(search-input) {
+  padding: 0.35em 0.8em;
+  border-width: 1px;
+  border-radius: 3px;
+}
+:root[data-theme="custom"] unicode-emoji-picker::part(emoji) {
+  border-radius: 3px;
+}
+:root[data-theme="custom"] unicode-emoji-picker::part(emoji with-variations):after {
+  border-bottom-right-radius: 3px;
+  border-width: 3px;
+}
+:root[data-theme="custom"] unicode-emoji-picker::part(emoji active),
+:root[data-theme="custom"] unicode-emoji-picker::part(emoji):hover,
+:root[data-theme="custom"] unicode-emoji-picker::part(emoji):focus-visible {
+  border: 0 none;
+  background-color: #ff9f4322;
+}
+:root[data-theme="custom"] unicode-emoji-picker::part(variations) {
+  border-radius: 3px;
+  outline: 1px solid #6b5b95;
+  transition: outline var(--transition);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.45);
+}
+:root[data-theme="custom"] unicode-emoji-picker::part(variations):focus-within {
+  outline: 1px solid #ffb454;
+}
+:root[data-theme="custom"] unicode-emoji-picker::part(backdrop) {
+  backdrop-filter: blur(4px);
+}
+:root[data-theme="custom"] unicode-emoji-picker::part(scrollbar-thumb) {
+  background: linear-gradient(130deg, #56356b, #862c44, #ee9248);
+  transition: filter 150ms ease-out;
+}
+:root[data-theme="custom"] unicode-emoji-picker::part(scrollbar-thumb):hover {
+  filter: brightness(1.6) saturate(1.6);
+}
+
+

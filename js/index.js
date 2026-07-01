@@ -5,22 +5,11 @@ defineUnicodeEmojiPicker();
 const pickedEmojiInput = document.querySelector('.picked-emoji .input');
 const pickedEmojiTooltip = document.querySelector('.picked-emoji .tooltip');
 const emojiPicker = document.querySelector('unicode-emoji-picker');
-const invertThemeButton = document.querySelector('.invert-theme-button');
+const colorSchemeInput = document.querySelector('.color-scheme-dropdown .input');
 const tabsPositionInput = document.querySelector('.tabs-position-dropdown .input');
 const versionInput = document.querySelector('.version-dropdown .input');
 const fontInput = document.querySelector('.font-dropdown .input');
 let tooltipTimeout = null;
-
-function toggleDarkTheme() {
-  if (document.documentElement.getAttribute('data-theme') === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'light');
-    invertThemeButton.textContent = 'Turn off the light 🌙';
-  }
-  else {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    invertThemeButton.textContent = 'Turn on the light ☀️';
-  }
-}
 
 function copyToClipboard() {
   if (tooltipTimeout) {
@@ -47,8 +36,8 @@ emojiPicker.addEventListener('emoji-pick', (event) => {
   pickedEmojiInput.value = event.detail.emoji;
 });
 
-invertThemeButton.addEventListener('click', () => {
-  toggleDarkTheme();
+colorSchemeInput.addEventListener('change', () => {
+  document.documentElement.setAttribute('data-theme', event.target.value);
 });
 
 tabsPositionInput.addEventListener('change', () => {
@@ -56,32 +45,22 @@ tabsPositionInput.addEventListener('change', () => {
 });
 
 versionInput.addEventListener('change', () => {
-  versionInput.querySelectorAll('option').forEach((option) => {
-    option.textContent = option.textContent.replace(' ✔️', '');
-    if (option.selected) {
-      option.textContent += ' ✔️';
-    }
-  });
   emojiPicker.setAttribute('version', versionInput.value);
 });
 
 fontInput.addEventListener('change', () => {
-  fontInput.querySelectorAll('option').forEach((option) => {
-    option.textContent = option.textContent.replace(' ✔️', '');
-    if (option.selected) {
-      option.textContent += ' ✔️';
-    }
-  });
   const fallBackFonts = 'apple color emoji, segoe ui emoji, android emoji, emojisymbols, emojione mozilla, twemoji mozilla, segoe ui symbol, sans-serif';
   emojiPicker.setAttribute('style', fontInput.value ? `--emoji-font-family: "${fontInput.value}", ${fallBackFonts};` : '');
 });
 
 const darkThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 darkThemeMediaQuery.addEventListener('change', () => {
-  toggleDarkTheme();
+  colorSchemeInput.value = 'dark';
+  document.documentElement.setAttribute('data-theme', 'dark');
 }, { passive: true });
 if (darkThemeMediaQuery.matches) {
-  toggleDarkTheme();
+  colorSchemeInput.value = 'custom';
+  document.documentElement.setAttribute('data-theme', 'custom');
 }
 
 // window.customElements.whenDefined('unicode-emoji-picker').then(() => {
