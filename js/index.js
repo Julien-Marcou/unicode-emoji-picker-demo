@@ -59,8 +59,8 @@ darkThemeMediaQuery.addEventListener('change', () => {
   document.documentElement.setAttribute('data-theme', 'dark');
 }, { passive: true });
 if (darkThemeMediaQuery.matches) {
-  colorSchemeInput.value = 'custom';
-  document.documentElement.setAttribute('data-theme', 'custom');
+  colorSchemeInput.value = 'dark';
+  document.documentElement.setAttribute('data-theme', 'dark');
 }
 
 // window.customElements.whenDefined('unicode-emoji-picker').then(() => {
