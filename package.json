@@ -7,7 +7,7 @@
     "flags": "node download-noto-flags.mjs"
   },
   "dependencies": {
-    "unicode-emoji-picker": "^2.0.0-next.7"
+    "unicode-emoji-picker": "^2.0.0"
   },
   "devDependencies": {
     "http-server": "^14.1.1"
