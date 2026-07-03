@@ -1,4 +1,4 @@
-import { defineUnicodeEmojiPicker } from 'unicode-emoji-picker';
+import { defineUnicodeEmojiPicker, whenUnicodeEmojiPickerDefined } from 'unicode-emoji-picker';
 
 defineUnicodeEmojiPicker();
 
@@ -56,58 +56,99 @@ fontInput.addEventListener('change', () => {
 const darkThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 darkThemeMediaQuery.addEventListener('change', () => {
   colorSchemeInput.value = 'dark';
-  document.documentElement.setAttribute('data-theme', 'dark');
+  colorSchemeInput.dispatchEvent(new Event('change'));
 }, { passive: true });
 if (darkThemeMediaQuery.matches) {
   colorSchemeInput.value = 'dark';
-  document.documentElement.setAttribute('data-theme', 'dark');
+  colorSchemeInput.dispatchEvent(new Event('change'));
 }
 
-// window.customElements.whenDefined('unicode-emoji-picker').then(() => {
-//   emojiPicker.setTranslation({
-//     'search': {
-//       emoji: '🔎',
-//       title: 'Rechercher un Emoji',
-//       inputPlaceholder: 'Rechercher un Emoji...',
-//     },
-//     'face-emotion': {
-//       emoji: '🙂',
-//       title: 'Émoticônes & Émotions',
-//     },
-//     'food-drink': {
-//       emoji: '🍉',
-//       title: 'Alimentation & Boissons',
-//     },
-//     'animals-nature': {
-//       emoji: '🦋',
-//       title: 'Nature & Animaux',
-//     },
-//     'activities-events': {
-//       emoji: '⚽',
-//       title: 'Activités & Événements',
-//     },
-//     'person-people': {
-//       emoji: '👨‍🚀',
-//       title: 'Personnes',
-//     },
-//     'travel-places': {
-//       emoji: '🏝️',
-//       title: 'Voyages & Lieux',
-//     },
-//     'objects': {
-//       emoji: '💡',
-//       title: 'Objets',
-//     },
-//     'symbols': {
-//       emoji: '🗯️',
-//       title: 'Symboles',
-//     },
-//     'flags': {
-//       emoji: '🏴‍☠️',
-//       title: 'Drapeaux',
-//     },
-//   });
-//   emojiPicker.selectTab('search');
-//   emojiPicker.searchEmoji('love face');
-//   emojiPicker.focusContent(true);
-// });
+const paramMatching = [
+  {
+    param: 'scheme',
+    input: colorSchemeInput,
+  },
+  {
+    param: 'position',
+    input: tabsPositionInput,
+  },
+  {
+    param: 'version',
+    input: versionInput,
+  },
+  {
+    param: 'font',
+    input: fontInput,
+  },
+];
+const queryParams = new URLSearchParams(window.location.search);
+for (const { param, input } of paramMatching) {
+  if (queryParams.has(param)) {
+    input.value = queryParams.get(param);
+    input.dispatchEvent(new Event('change'));
+  }
+}
+if (queryParams.has('tab')) {
+  emojiPicker.setAttribute('default-tab', queryParams.get('tab'));
+}
+
+whenUnicodeEmojiPickerDefined().then(() => {
+  if (queryParams.has('tab')) {
+    const tab = queryParams.get('tab');
+    emojiPicker.selectTab(tab)
+  }
+  if (queryParams.has('q')) {
+    emojiPicker.searchEmoji(queryParams.get('q'))
+  }
+  if (queryParams.get('lang') === 'fr') {
+    emojiPicker.setTranslation({
+      'search': {
+        emoji: '🔎',
+        title: 'Rechercher un Emoji',
+        inputPlaceholder: 'Rechercher un Emoji...',
+      },
+      'face-emotion': {
+        emoji: '🙂',
+        title: 'Émoticônes & Émotions',
+      },
+      'food-drink': {
+        emoji: '🍉',
+        title: 'Alimentation & Boissons',
+      },
+      'animals-nature': {
+        emoji: '🦋',
+        title: 'Nature & Animaux',
+      },
+      'activities-events': {
+        emoji: '⚽',
+        title: 'Activités & Événements',
+      },
+      'person-people': {
+        emoji: '👨‍🚀',
+        title: 'Personnes',
+      },
+      'travel-places': {
+        emoji: '🏝️',
+        title: 'Voyages & Lieux',
+      },
+      'objects': {
+        emoji: '💡',
+        title: 'Objets',
+      },
+      'symbols': {
+        emoji: '🗯️',
+        title: 'Symboles',
+      },
+      'flags': {
+        emoji: '🏴‍☠️',
+        title: 'Drapeaux',
+      },
+    });
+  }
+  if (queryParams.get('focus') === 'header') {
+    emojiPicker.focusHeader();
+  }
+  else if (queryParams.get('focus') === 'content') {
+    emojiPicker.focusContent(true);
+  }
+});
